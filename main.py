@@ -1,9 +1,13 @@
-import requisitor
-from write import writer
+from CovidETL.requisitor import CovidBrasil
+from CovidETL.requisitor import CovidMundo
+from CovidETL.write import writer
 
 
-a = requisitor.requisita_estados()
-# writer.write_brStates(archive_name='sp', contain=a)
+a = CovidBrasil
+b = a.requisita_estados('sp')
+writer.write_brStates(archive_name='sp', contain=b)
 
-b = requisitor.requisita_paises()
-# writer.write_allCountries(archive_name='cuba', contain=b)
+
+b = CovidMundo
+d = b.requisita_paises('cuba')
+writer.write_allCountries(contain=d)
