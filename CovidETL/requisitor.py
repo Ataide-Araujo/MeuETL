@@ -15,12 +15,21 @@ logger.setLevel(logging.INFO) #seta mensagens de info (erros, warnings, critical
 class CovidBrasil:
     def requisita_estados(states=None):
         # Lista casos por estado
+        if states is None:
+            logging.warning('É obrigatório informar um estado (ex: sp)')
+            sys.exit()
         request = requests.get('https://covid19-brazil-api.now.sh/api/status/v1')
         if request.status_code != 200:
             logger.warning('API fora do ar.')
             sys.exit()
 
         request = requests.get(f'https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/{states}').json()
+
+        try:
+            request['uid']
+        except KeyError:
+            logging.error(f' Estado "{states}" não encontrado! ')
+            sys.exit()
 
         # Parser
         id = request['uid']
@@ -48,6 +57,11 @@ class CovidMundo:
 
         request = requests.get(f'https://covid19-brazil-api.now.sh/api/report/v1/{country}').json()
 
+        try:
+            request['uid']
+        except KeyError as e:
+            logging.error(f' País "{country}" não encontrado! ')
+            sys.exit()
         # Parser
         item = request['data']
         country = item['country']
