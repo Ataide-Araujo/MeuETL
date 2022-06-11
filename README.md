@@ -6,4 +6,10 @@ Como executar:
 
 - pip install -r requeriments.txt
 
-- python -m MeuETL
+- python -m CovidETL -h
+
+python -m CovidETL -estado 'sigla do estado'
+
+ou
+
+python -m CovidETL -pais 'nome do país'
