@@ -58,7 +58,7 @@ class CovidMundo:
         request = requests.get(f'https://covid19-brazil-api.now.sh/api/report/v1/{country}').json()
 
         try:
-            request['uid']
+            request['data']['country']
         except KeyError as e:
             logging.error(f' País "{country}" não encontrado! ')
             sys.exit()
