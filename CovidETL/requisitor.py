@@ -1,8 +1,9 @@
-from pytz import country_names
 import requests
 from datetime import datetime
 import logging
 import sys
+import re
+from unidecode import unidecode
 # import pydantic
 
 logger = logging.getLogger(__name__) #contém o nome do módulo
@@ -48,29 +49,39 @@ class CovidBrasil:
 
 
 class CovidMundo:
-    def requisita_paises(country=None):
+    def __init__(self, country):
+        self.country = country
+
+    @staticmethod
+    def RepCountry(country):
+        return re.sub('\&|\'|\.|\!|\?|\(|\)|\ç','',unidecode(country))
+
+    def getCountry(self):
+        return self.country
+
+    def requisita_paises(self):
         # Lista de casos por país
         request = requests.get('https://covid19-brazil-api.now.sh/api/status/v1')
         if request.status_code != 200:
             logger.warning('API fora do ar.')
             sys.exit()
 
-        request = requests.get(f'https://covid19-brazil-api.now.sh/api/report/v1/{country}').json()
+        request = requests.get(f'https://covid19-brazil-api.now.sh/api/report/v1/{self.country}').json()
 
         try:
             request['data']['country']
-        except KeyError as e:
-            logging.error(f' País "{country}" não encontrado! ')
-            sys.exit()
-        # Parser
-        item = request['data']
-        country = item['country']
-        confirmed = item['confirmed']
-        deaths = item['deaths']
-        datenow = item['updated_at'].split('T')[0]
-        datenow = datetime.fromisoformat(datenow).strftime('%d-%m-%Y')
-        requested_list1 = (country, confirmed, deaths, datenow)
-        return requested_list1
+            # Parser
+            item = request['data']
+            country = item['country']
+            confirmed = item['confirmed']
+            deaths = item['deaths']
+            datenow = item['updated_at'].split('T')[0]
+            datenow = datetime.fromisoformat(datenow).strftime('%d-%m-%Y')
+            requested_list1 = (country, confirmed, deaths, datenow)
+            return requested_list1
+        except KeyError:
+            logging.error(f' País "{self.country}" não encontrado! ')
+        
 
 # '''(PADRÃO) Lista casos por todos estados brasileiros
 # https://covid19-brazil-api.now.sh/api/report/v1'''
