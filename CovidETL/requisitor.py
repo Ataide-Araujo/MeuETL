@@ -8,6 +8,7 @@ from unidecode import unidecode
 
 logger = logging.getLogger(__name__) #contém o nome do módulo
 logger.setLevel(logging.INFO) #seta mensagens de info (erros, warnings, critical)
+logging.basicConfig(level=logging.INFO)
 
 
 # state = country_names
@@ -52,20 +53,27 @@ class CovidMundo:
     def __init__(self, country):
         self.country = country
 
-    @staticmethod
-    def RepCountry(country):
-        return re.sub('\&|\'|\.|\!|\?|\(|\)|\ç','',unidecode(country))
-
-    def getCountry(self):
-        return self.country
-
-    def requisita_paises(self):
-        # Lista de casos por país
+    @classmethod
+    def check_api(cls):
         request = requests.get('https://covid19-brazil-api.now.sh/api/status/v1')
         if request.status_code != 200:
             logger.warning('API fora do ar.')
             sys.exit()
+        logger.info('API ON!')
+        return True
 
+
+    @staticmethod
+    def RepCountry(country):
+        return re.sub('\&|\'|\.|\!|\?|\(|\)|\ç','',unidecode(country))
+
+
+    def getCountry(self):
+        return self.country
+
+
+    def requisita_paises(self):
+        # Lista de casos por país
         request = requests.get(f'https://covid19-brazil-api.now.sh/api/report/v1/{self.country}').json()
 
         try:
