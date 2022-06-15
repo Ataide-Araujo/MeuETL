@@ -17,9 +17,8 @@ class writer():
     
     @classmethod
     def write_allCountries(cls, archive_name=None, header=HEADER_COUNTRY,contain=None):
-        if contain is None:
-            contain = ['Não há dados para esse país']
         with open(f'dados_{archive_name}.csv', 'w') as file:
             wr = csv.writer(file, delimiter=',')
             wr.writerow(header)
-            wr.writerow(contain)
+            for item in contain:
+                wr.writerow(item)
