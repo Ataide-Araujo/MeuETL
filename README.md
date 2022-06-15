@@ -1,6 +1,8 @@
 Projeto Meu ETL do NAPP Academy (Em produção)
+Gera um csv com alguns dados sobre a covid
+(cidade ou país, casos, mortes, atualizado em)
 
-Como executar:
+Como executar
 
 - Clonar o projeto
 
@@ -16,7 +18,8 @@ Como executar:
 # Executavel em linha de comando para estado
 python -m CovidETL -estado 'sigla do estado'
 
-ou
-
-# Executavel em linha de comando para país
+# Executavel em linha de comando para um país
 python -m CovidETL -pais 'nome do país'
+
+# Executável em linha de comando para *todos os países
+Python -m CovidETL --all
