@@ -1,32 +1,20 @@
-import logging
-from CovidETL import CovidBrasil, CovidMundo
+from CovidETL import CovidBrasil, CovidMundo, Group, Check
 from CovidETL import writer
-import argparse
-from pytz import country_names
-
+from CovidETL import Args
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-estado","--estado", help="Informe a sigla do estado", type=str)
-    parser.add_argument("-pais","--pais", help="Informe o nome do país", type=str)
-    parser.add_argument("--all", help="Pega todos os países da lista", action="store_true")
-    args = parser.parse_args()
-  
+    args = Args.args_params()
 
-    if args.estado:
-        state = CovidBrasil.requisita_estados(states=args.estado)
-        writer.write_brStates(archive_name=args.estado,contain=state)
-    elif args.pais:
-
-        country = CovidMundo
-        dados = country.requisita_paises(country=args.pais)
-        writer.write_allCountries(archive_name=args.pais,contain=dados)
-    
-    elif args.all:
-        state = country_names
-        for sigla, pais in state.items():
-            pais = CovidMundo.RepCountry(pais)
-            print(f'Gravando o país: {pais}')
-            country = CovidMundo(pais)
-            oneCountry = country.requisita_paises()
-            writer.write_allCountries(archive_name=pais, contain=oneCountry)
+    if Check.check_api():
+        if args.estado:
+            state = CovidBrasil(state=args.estado)
+            dados = state.requisita_estados()
+            writer.write_brStates(archive_name=args.estado,contain=dados)
+        elif args.pais:
+            country = CovidMundo(country=args.pais)
+            dados = country.requisita_paises()
+            writer.write_oneCountry(archive_name=args.pais,contain=dados)
+        
+        elif args.all:
+            oneCountry = Group.group_all_countries()
+            writer.write_allCountries(archive_name='All_Contries', contain=oneCountry)
