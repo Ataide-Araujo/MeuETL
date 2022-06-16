@@ -1,7 +1,7 @@
 Projeto Meu ETL do NAPP Academy (Em produção)
 Gera um csv com alguns dados sobre a covid
 para todos os estados brasileiros ou *todos os países
-(cidade ou país, casos, mortes, atualizado em)
+(estado ou país, casos, mortes, atualizado em)
 
 Como executar
 
