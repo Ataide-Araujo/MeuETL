@@ -11,48 +11,7 @@ logger.setLevel(logging.INFO) #seta mensagens de info (erros, warnings, critical
 logging.basicConfig(level=logging.INFO)
 
 
-# state = country_names
-# for y,x in state.items():
-#     print(x)
-class CovidBrasil:
-    def requisita_estados(states=None):
-        # Lista casos por estado
-        if states is None:
-            logging.warning('É obrigatório informar um estado (ex: sp)')
-            sys.exit()
-        request = requests.get('https://covid19-brazil-api.now.sh/api/status/v1')
-        if request.status_code != 200:
-            logger.warning('API fora do ar.')
-            sys.exit()
-
-        request = requests.get(f'https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/{states}').json()
-
-        try:
-            request['uid']
-        except KeyError:
-            logging.error(f' Estado "{states}" não encontrado! ')
-            sys.exit()
-
-        # Parser
-        id = request['uid']
-        uf = request['uf']
-        state = request['state']
-        cases = request['cases']
-        deaths = request['deaths']
-        suspects = request['suspects']
-        refuses = request['refuses']
-        datenow = request['datetime'].split('T')[0]
-        datenow = datetime.fromisoformat(datenow).strftime('%d-%m-%Y')
-        requested_list = (id,uf,state, cases, deaths, suspects, refuses, datenow)
-        return requested_list
-
-
-
-
-class CovidMundo:
-    def __init__(self, country):
-        self.country = country
-
+class Check:
     @classmethod
     def check_api(cls):
         request = requests.get('https://covid19-brazil-api.now.sh/api/status/v1')
@@ -61,6 +20,36 @@ class CovidMundo:
             sys.exit()
         logger.info('API ON!')
         return True
+
+
+class CovidBrasil:
+    def __init__(self, state):
+        self.state = state
+
+    def requisita_estados(self):
+        # Lista casos por estado
+        request = requests.get(f'https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/{self.state}').json()
+
+        try: # Parser
+            id = request['uid']
+            uf = request['uf']
+            state = request['state']
+            cases = request['cases']
+            deaths = request['deaths']
+            suspects = request['suspects']
+            refuses = request['refuses']
+            datenow = request['datetime'].split('T')[0]
+            datenow = datetime.fromisoformat(datenow).strftime('%d-%m-%Y')
+            requested_list = (id,uf,state, cases, deaths, suspects, refuses, datenow)
+            return requested_list
+        except KeyError:
+            logging.error(f' Estado "{self.state}" não encontrado! ')
+            sys.exit()
+
+
+class CovidMundo:
+    def __init__(self, country):
+        self.country = country
 
 
     @staticmethod
@@ -76,9 +65,7 @@ class CovidMundo:
         # Lista de casos por país
         request = requests.get(f'https://covid19-brazil-api.now.sh/api/report/v1/{self.country}').json()
 
-        try:
-            request['data']['country']
-            # Parser
+        try: # parser
             item = request['data']
             country = item['country']
             confirmed = item['confirmed']
