@@ -2,7 +2,7 @@ from CovidETL import CovidBrasil, CovidMundo, Group, Check
 from CovidETL import writer
 from CovidETL import Args
 
-if __name__ == '__main__':
+def main():
     args = Args.args_params()
 
     if Check.check_api():
@@ -18,3 +18,7 @@ if __name__ == '__main__':
         elif args.all:
             oneCountry = Group.group_all_countries()
             writer.write_allCountries(archive_name='All_Contries', contain=oneCountry)
+            
+
+if __name__ == '__main__':
+    main()
