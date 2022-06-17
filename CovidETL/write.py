@@ -11,7 +11,7 @@ class writer():
 
     @classmethod
     def write_brStates(cls, archive_name=None, header=HEADER_STATES, contain=None):
-        with open(f'casos_{archive_name}.csv', 'w') as file:
+        with open(f'{archive_name}.csv', 'w') as file:
             wr = csv.writer(file, delimiter=',')
             wr.writerow(header)
             for item in contain:
@@ -21,7 +21,7 @@ class writer():
     
     @classmethod
     def write_allCountries(cls, archive_name=None, header=HEADER_COUNTRY,contain=None):
-        with open(f'casos_{archive_name}.csv', 'w') as file:
+        with open(f'{archive_name}.csv', 'w') as file:
             wr = csv.writer(file, delimiter=',')
             wr.writerow(header)
             for item in contain:
