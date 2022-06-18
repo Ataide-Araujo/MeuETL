@@ -8,8 +8,11 @@ Como executar
 
 - Clonar o projeto
 
-# Criar um ambiente virtual
-python -m venv venv
+# Abrir o terminal na pasta MeuETL e criar um ambiente virtual
+python3 -m venv venv
+
+# Ativar o ambiente virtual
+source venv/bin/activate
 
 # Instalar as libs necessárias
 pip install -r requirements.txt
