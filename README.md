@@ -6,13 +6,19 @@ ou *todos os países (Casos confirmados, mortes)
 
 Como executar
 
-- Clonar o projeto
+# Clonar o projeto
+- git clone https://github.com/Ataide-Araujo/MeuETL.git
 
-# Abrir o terminal na pasta MeuETL e criar um ambiente virtual
+# Instalar a lib utilizada para a máquina virtual
+pip install virtualenv
+
+# Abrir o terminal na pasta root onde foi clonado o projeto (a venv ficará ao lado da pasta MeuETL)
 python3 -m venv venv
 
 # Ativar o ambiente virtual
-source venv/bin/activate
+source venv/bin/activate  (Linux ou macOS)
+
+venv/Scripts/activate.bat  (Windows)
 
 # Instalar as libs necessárias
 pip install -r requirements.txt
