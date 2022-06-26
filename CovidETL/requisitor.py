@@ -1,8 +1,7 @@
 import requests
 from datetime import datetime
 import logging
-import sys
-# import pydantic
+
 
 logger = logging.getLogger(__name__) #contém o nome do módulo
 logger.setLevel(logging.INFO) #seta mensagens de info (erros, warnings, critical)
@@ -11,11 +10,12 @@ logging.basicConfig(level=logging.INFO)
 
 class Check:
     @classmethod
-    def check_api(cls):
-        request = requests.get('https://covid19-brazil-api.now.sh/api/status/v1')
+    def check_api(cls, url=None):
+        url = url or 'https://covid19-brazil-api.now.sh/api/status/v1'
+        request = requests.get(url)
         if request.status_code != 200:
             logger.warning('API fora do ar.')
-            sys.exit()
+            return False
         logger.info('API ON!')
         return True
 
