@@ -1,5 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class MakeGraph:
@@ -20,7 +23,7 @@ class MakeGraph:
             dados = df[colunm].values.tolist()
 
             # graph details
-            window = plt.figure(figsize=(15,10))
+            window = plt.figure(figsize=(15,7))
             plt.title(f'Os 10 estados com mais {colunm}', weight='bold', fontsize='30')
             plt.ylabel('Escala', weight='bold')
             plt.xticks(rotation=20)
@@ -28,7 +31,7 @@ class MakeGraph:
             plt.bar_label(result, padding=2)
             plt.grid()
             plt.savefig(f'grafico_estado_{colunm}.png')
-
+        logger.info('Gráficos gerados!')
 
             
     def processCountry(archive:str = None):
@@ -56,4 +59,5 @@ class MakeGraph:
             plt.bar_label(result, padding=2)
             plt.grid()
             plt.savefig(f'grafico_pais_{colunm}.png')
+        logger.info('Gráficos gerados!')
             
