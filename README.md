@@ -20,11 +20,11 @@ source venv/bin/activate  (Linux ou macOS)
 
 venv/Scripts/activate.bat  (Windows)
 
-# Instalar as libs necessárias
-pip install -r requirements.txt
-
 # Movendo para a pasta MeuETL
 cd MeuETL/
+
+# Instalar as libs necessárias
+pip install -r requirements.txt
 
 # Testando o projeto
 pytest tests/
